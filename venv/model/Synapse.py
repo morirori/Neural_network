@@ -6,11 +6,15 @@ class Synapse():
         self.synapses=[]
 
 
-    def add_neuron(self,neuron,weight):
+    def add_connection(self,neuron,weight):
             temp_dict={}
             temp_dict["neuron"]=neuron
             temp_dict["weight"]=weight
             self.synapses.append(temp_dict)
+
+    def update_neuron(self,index,neuron):
+            self.synapses[index]["neuron"]=neuron
+
 
     def get_synapses_list(self):
         return self.synapses
