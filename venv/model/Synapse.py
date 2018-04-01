@@ -35,3 +35,11 @@ class Synapse():
             toReturn+= str(x)+"  "
 
         return toReturn
+
+    def print(self):
+        toReturn=""
+        for x in self.synapses:
+            toReturn+= "neuron id: {0} layer id:  {1} output{2} weight {3} ".format(str(x["neuron"].id), str(x["neuron"].layer_id),
+                                                                                    str(x["neuron"].output), str(x["weight"]))
+
+        return toReturn

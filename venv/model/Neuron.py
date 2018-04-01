@@ -1,20 +1,22 @@
+from math import exp
+
 class Neuron():
     
-    def __init__(self, input_synapses, **opt):
-        self.input_synapses=input_synapses  #synapse
-        self.output_synapses=0
+    def __init__(self,layer_id, id):
+        self.layer_id=layer_id
+        self.id=id
+        self.input_synapses=""  #synapse
+        self.output_synapses=""
         self.weighted_sum=0
         self.delta=0
-        self.normalized_input_data=[]
-        self.learning_factor=-0.5
+        self.data=[]
+        self.output=0
 
-        if opt.keys() == "output":
-            self.output=opt.get("output")
+    def add_input_synapse(self,synapse):
+        self.input_synapses=synapse
 
-        if opt.keys() == "output_synapses":
-            self.output_synapses=opt.get("output_synapes")
-
-
+    def add_output_synapse(self,synapse):
+        self.output_synapses=synapse
 
     def calucate_weights(self):
         synapses=self.input_synapses.get_synapses_list()
@@ -24,49 +26,47 @@ class Neuron():
 
         self.weighted_sum=temp_weight
 
-    def normalize_data(self):
-        unnormalized_data=self.input_synapses.get_raw_data()
-        self.normalized_input_data.clear()
-        for i in range(len(unnormalized_data)):
-            value=(unnormalized_data[i]-min(unnormalized_data))/(max(unnormalized_data)-min(unnormalized_data))
-            self.normalized_input_data.append(value)
 
-    def calculate_output(self):
-        synapses_list=self.input_synapses.get_synapses_list()
-        temp_normalized_data=self.normalized_input_data
-        value=0
-        for i in range((len(temp_normalized_data))):
-            value+=temp_normalized_data[i]*synapses_list[i]["weight"]
-        self.output=value
+    def calculate_output(self,  activation_fun,beta=1):
 
-    def update_weights(self):
+        if activation_fun == "sigmoid":
+            synapses_list=self.input_synapses.get_synapses_list()
+            value=0
+            for i in range((len(synapses_list))):
+                value+=synapses_list[i]["neuron"].output*synapses_list[i]["weight"]
 
+            value=1/(1+exp(-1*beta*value))
+            self.output=value
+
+    def update_weights(self,learning_factor=0.01 ):
         synapses=self.input_synapses.get_synapses_list()
         for synapse in synapses:
-            if isinstance(synapse["neuron"], Neuron):
-                weight_delta=self.learning_factor*self.delta*(1-self.output)*self.output*synapse["neuron"].output
-            else:
-                weight_delta=self.learning_factor*self.delta*(1-self.output)*self.output*self.output*synapse["neuron"]
-
+            weight_delta=learning_factor*self.delta*(1-self.output)*self.output*synapse["neuron"].output
             synapse["weight"]=synapse["weight"]+weight_delta
 
 
+    #TODO backpropagationn delta
+    def calculate_delta(self):
+        synapses = self.output_synapses.get_synapses_list()
+        delta=0
+        for synapse in synapses:
+            delta+=synapse["neuron"].delta*synapse["weight"]*(1-synapse["neuron"].output)*synapse["neuron"].output
+        self.delta=delta
 
-    def calculate_delta(self, **opt):
-        if opt.keys().__contains__("delta"):
-            self.delta = opt.get("delta")
-
-        else:
-          pass
-          #TODO slide 18 horzyk preseenation
-
-
-    def update(self):
-        self.normalize_data()
-        self.calculate_output()
+    def update(self,activation_fun):
+        self.calculate_output(activation_fun)
 
     def get_output(self):
         return self.output
 
-    def add_output_synapse(self):
-        pass
+    def __str__(self):
+        print("layer_id:" +str(self.layer_id) )
+        print("id:" +str(self.id ))
+
+        if self.input_synapses != "":
+            print("input:" +self.input_synapses.print() )
+
+        if self.output_synapses != "":
+            print("output:" +self.output_synapses.print() )
+
+        return " /n"
