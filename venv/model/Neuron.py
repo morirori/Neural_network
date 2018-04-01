@@ -27,7 +27,7 @@ class Neuron():
         self.weighted_sum=temp_weight
 
 
-    def calculate_output(self,  activation_fun,beta=1):
+    def calculate_output(self,  activation_fun,beta):
 
         if activation_fun == "sigmoid":
             synapses_list=self.input_synapses.get_synapses_list()
@@ -38,7 +38,7 @@ class Neuron():
             value=1/(1+exp(-1*beta*value))
             self.output=value
 
-    def update_weights(self,learning_factor=0.01 ):
+    def update_weights(self,learning_factor ):
         synapses=self.input_synapses.get_synapses_list()
         for synapse in synapses:
             weight_delta=learning_factor*self.delta*(1-self.output)*self.output*synapse["neuron"].output
@@ -53,8 +53,8 @@ class Neuron():
             delta+=synapse["neuron"].delta*synapse["weight"]*(1-synapse["neuron"].output)*synapse["neuron"].output
         self.delta=delta
 
-    def update(self,activation_fun):
-        self.calculate_output(activation_fun)
+    def update(self,activation_fun,beta):
+        self.calculate_output(activation_fun,beta)
 
     def get_output(self):
         return self.output
@@ -62,11 +62,13 @@ class Neuron():
     def __str__(self):
         print("layer_id:" +str(self.layer_id) )
         print("id:" +str(self.id ))
+        print("output:" +str(self.delta ))
+        print("delta:" +str(self.output ))
 
         if self.input_synapses != "":
-            print("input:" +self.input_synapses.print() )
+            print("input_synapse:" +self.input_synapses.print() )
 
         if self.output_synapses != "":
-            print("output:" +self.output_synapses.print() )
+            print("output_synapse:" +self.output_synapses.print() )
 
         return " /n"

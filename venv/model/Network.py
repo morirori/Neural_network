@@ -6,8 +6,8 @@ class Network:
         self.activation_function="sigmoid"
         self.input_layer=layer[0]
         self.output_layer=layer[-1]
-        self.beta = 1.0
-        self.learning_rate = 0.01
+        self.beta = 0.5
+        self.learning_rate = 0.2
         self.label=list()
     # TODO: offline trainifn
     # TODO: updating learinig rate
@@ -19,16 +19,32 @@ class Network:
             self.set_feature_value(data[i])
             self.set_label(labels[i])
             for i in range(repetitions):
-                self.calculate()
-                self.backpropagetion()
+                self.calculate(self.beta)
+                self.backpropagetion(self.learning_rate)
             #self.print()
 
+        # print("forward")
+        # for layer in self.layers_list:
+        #     layer.print()
+        # print("backward")
+        # for layer in reversed(self.layers_list):
+        #     layer.print()
+
     def predict(self,data,labels):
+        to_return=list()
         for i in range(len(data)):
             self.set_feature_value(data[i])
             self.set_label(labels[i])
-            self.calculate()
-            self.print()
+            self.calculate(self.beta)
+#           self.print()
+            to_return.append(self.get_output())
+        return to_return
+
+    def get_output(self):
+        to_return=[]
+        for neuron in self.output_layer.neuron_vector:
+            to_return.append(neuron.output)
+        return to_return
 
     def check_corretnes(self):
         to_compare=[]
@@ -48,21 +64,21 @@ class Network:
             counter += 1
 
 
-    def calculate(self):
+    def calculate(self,beta):
         for layer  in self.layers_list:
             if layer.tag != "input":
-                layer.update()
+                layer.update(beta)
 
 
-    def backpropagetion(self):
+    def backpropagetion(self,learning_factor):
         for layer in reversed(self.layers_list):
             if layer.tag=="output":
                 self.set_output_delta()
-                layer.update_weights()
+                layer.update_weights(learning_factor)
             elif layer.tag == "input":
                 pass
             else:
-                layer.update_weights()
+                layer.update_weights(learning_factor)
 
     def set_output_delta(self):
         for i in range(len(self.output_layer.neuron_vector)):

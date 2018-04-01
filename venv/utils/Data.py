@@ -3,8 +3,8 @@ from utils.DataHelper import  DataHelper
 
 class Data():
 
-    def __init__(self,file,rows):
-        self.data=Data_importer.import_data_to_list_of_dict(file,rows)
+    def __init__(self,file,rows,shufle_data):
+        self.data=Data_importer.import_data_to_list_of_dict(file,rows,shufle_data)
         self.labels=[]
 
     def label_iris_dat(self):
