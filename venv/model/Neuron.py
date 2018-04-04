@@ -1,4 +1,9 @@
 from math import exp
+from utils.Functions import sigmoid
+from utils.Functions import sigmoid_derivative
+from utils.Functions import hiberbolic
+from utils.Functions import hiperbolic_derivative
+from utils.Functions import ActivaionFunction
 
 class Neuron():
     
@@ -18,40 +23,56 @@ class Neuron():
     def add_output_synapse(self,synapse):
         self.output_synapses=synapse
 
-    def calucate_weights(self):
-        synapses=self.input_synapses.get_synapses_list()
+    def calucate_weighted_sum(self):
+        synapses_list=self.input_synapses.get_synapses_list()
         temp_weight=0
-        for synapse in synapses:
-            temp_weight +=synapse["weight"]
+        for i in range((len(synapses_list))):
+            temp_weight+=synapses_list[i]["neuron"].output*synapses_list[i]["weight"]
 
         self.weighted_sum=temp_weight
 
 
     def calculate_output(self,  activation_fun,beta):
+        synapses_list=self.input_synapses.get_synapses_list()
+        value=0
+        # for i in range((len(synapses_list))):
+        #     value+=synapses_list[i]["neuron"].output*synapses_list[i]["weight"]
+        self.calucate_weighted_sum()
+        if activation_fun == ActivaionFunction.SIGMOID:
+            self.output=sigmoid(beta,self.weighted_sum)
+        if activation_fun == ActivaionFunction.HYPERBOLIC_TANGENT:
+            self.output=hiberbolic(beta,self.weighted_sum)
 
-        if activation_fun == "sigmoid":
-            synapses_list=self.input_synapses.get_synapses_list()
-            value=0
-            for i in range((len(synapses_list))):
-                value+=synapses_list[i]["neuron"].output*synapses_list[i]["weight"]
 
-            value=1/(1+exp(-1*beta*value))
-            self.output=value
-
-    def update_weights(self,learning_factor ):
+    def update_weights(self,learning_factor,activation_fun ):
         synapses=self.input_synapses.get_synapses_list()
         for synapse in synapses:
-            weight_delta=learning_factor*self.delta*(1-self.output)*self.output*synapse["neuron"].output
+
+            if activation_fun ==ActivaionFunction.SIGMOID:
+                derivative=sigmoid_derivative(self.output)
+
+            elif activation_fun == ActivaionFunction.HYPERBOLIC_TANGENT:
+                derivative=hiperbolic_derivative(self.output)
+
+            weight_delta=learning_factor*self.delta*derivative*synapse["neuron"].output
             synapse["weight"]=synapse["weight"]+weight_delta
 
 
-    #TODO backpropagationn delta
-    def calculate_delta(self):
+    def calculate_delta(self,activation_fun):
         synapses = self.output_synapses.get_synapses_list()
         delta=0
         for synapse in synapses:
-            delta+=synapse["neuron"].delta*synapse["weight"]*(1-synapse["neuron"].output)*synapse["neuron"].output
+
+            if activation_fun == ActivaionFunction.SIGMOID:
+                derivative=sigmoid_derivative(synapse["neuron"].output)
+
+            elif activation_fun == ActivaionFunction.HYPERBOLIC_TANGENT:
+                derivative=hiperbolic_derivative(synapse["neuron"].output)
+
+            delta+=synapse["neuron"].delta*synapse["weight"]*derivative
         self.delta=delta
+
+
 
     def update(self,activation_fun,beta):
         self.calculate_output(activation_fun,beta)

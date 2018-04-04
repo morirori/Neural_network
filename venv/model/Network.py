@@ -1,26 +1,29 @@
 from model.Layer import Layer
+from utils.Functions import ActivaionFunction
+from utils.Functions import ActivationFunctionDoesntExist
 class Network:
 
     def __init__(self,layer):
         self.layers_list=layer
-        self.activation_function="sigmoid"
+        self.activation_function=""
         self.input_layer=layer[0]
         self.output_layer=layer[-1]
-        self.beta = 0.5
-        self.learning_rate = 0.2
+        self.beta = 0.1
+        self.learning_rate = 0.15
         self.label=list()
     # TODO: offline trainifn
     # TODO: updating learinig rate
 
 
-    def train(self,data,labels, repetitions):
-
+    def train(self,data,labels, repetitions,activation_function):
+        self.set_activation_fun(activation_function)
         for i in range(len(data)):
             self.set_feature_value(data[i])
+
             self.set_label(labels[i])
             for i in range(repetitions):
-                self.calculate(self.beta)
-                self.backpropagetion(self.learning_rate)
+                self.calculate(beta=self.beta,activation_function=self.activation_function)
+                self.backpropagetion(learning_factor=self.learning_rate,activation_function=self.activation_function)
             #self.print()
 
         # print("forward")
@@ -30,12 +33,13 @@ class Network:
         # for layer in reversed(self.layers_list):
         #     layer.print()
 
-    def predict(self,data,labels):
+    def predict(self,data,labels,activation_function):
+        self.set_activation_fun(activation_function)
         to_return=list()
         for i in range(len(data)):
             self.set_feature_value(data[i])
             self.set_label(labels[i])
-            self.calculate(self.beta)
+            self.calculate(beta=self.beta,activation_function=self.activation_function)
 #           self.print()
             to_return.append(self.get_output())
         return to_return
@@ -64,27 +68,32 @@ class Network:
             counter += 1
 
 
-    def calculate(self,beta):
+    def calculate(self,beta,activation_function):
         for layer  in self.layers_list:
             if layer.tag != "input":
-                layer.update(beta)
+                layer.update(activation_function,beta)
 
 
-    def backpropagetion(self,learning_factor):
+    def backpropagetion(self,learning_factor,activation_function):
         for layer in reversed(self.layers_list):
             if layer.tag=="output":
                 self.set_output_delta()
-                layer.update_weights(learning_factor)
+                layer.update_weights(activation_fun=activation_function,learning_factor=learning_factor)
             elif layer.tag == "input":
                 pass
             else:
-                layer.update_weights(learning_factor)
+                layer.update_weights(activation_fun=self.activation_function,learning_factor=learning_factor)
 
     def set_output_delta(self):
         for i in range(len(self.output_layer.neuron_vector)):
             delta = self.label[i] - self.output_layer.neuron_vector[i].output
             self.output_layer.neuron_vector[i].delta=delta
 
+    def set_activation_fun(self,activation_fun):
+        if ActivaionFunction(activation_fun)!= None:
+            self.activation_function=activation_fun
+        else:
+            raise ActivationFunctionDoesntExist()
 
     def print(self):
         print("label")

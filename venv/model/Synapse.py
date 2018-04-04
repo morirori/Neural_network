@@ -29,13 +29,6 @@ class Synapse():
 
         return to_return
 
-    def __str__(self):
-        toReturn=""
-        for x in self.synapses:
-            toReturn+= str(x)+"  "
-
-        return toReturn
-
     def print(self):
         toReturn=""
         for x in self.synapses:

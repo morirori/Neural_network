@@ -16,23 +16,19 @@ class Layer():
         for neuron in self.neuron_vector:
             neuron.add_input_synapse(SynapseFactory.create(layer.neuron_vector))
 
-    def update(self,beta):
+    def update(self,activation_fun,beta):
 
         for neuron in self.neuron_vector:
-            neuron.update("sigmoid",beta)
-            # self.output_vector[counter] = neuron.output
-            # delta=self.label[counter]-self.output_vector[counter]
-            # neuron.calculate_delta(delta=delta)
-            # neuron.update_weights()
+            neuron.update(activation_fun,beta)
 
-    def update_weights(self,learning_factor):
+    def update_weights(self,activation_fun,learning_factor):
         if self.tag != "output":
             for neuron in self.neuron_vector:
-                neuron.calculate_delta()
-                neuron.update_weights(learning_factor)
+                neuron.calculate_delta(activation_fun=activation_fun)
+                neuron.update_weights(learning_factor=learning_factor,activation_fun=activation_fun)
         else:
             for neuron in self.neuron_vector:
-                neuron.update_weights(learning_factor)
+                neuron.update_weights(learning_factor=learning_factor,activation_fun=activation_fun)
 
     def get_layer_output(self):
         output=list()

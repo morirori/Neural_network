@@ -1,15 +1,17 @@
 from utils.Data import  Data
 from factories.NetworkFactory import NetworkFactory
 from model.Network import Network
+from utils.Functions import ActivaionFunction
 
 data=Data("resources/IrisDataTrain.xls",125,shufle_data=True)
 data.label_iris_dat()
-layers=[data.def_input_neurons(),15,8,data.def_output_neurons()]
-mlp = NetworkFactory.create(layers)
-mlp.train(data.normalize_data(),data.label_iris_dat(),500)
+normalized_data=data.normalize_data()
+unnormalized_data=data.data
+layers=[data.def_input_neurons(),15,12,8,data.def_output_neurons()]
+mlp = NetworkFactory.create_with_each_layer_connection(layers)
+mlp.train(data.normalize_data(),data.label_iris_dat(),repetitions=1000,activation_function=ActivaionFunction.HYPERBOLIC_TANGENT)
 predict_data=Data("resources/IrisData.xls",150,shufle_data=False)
-returned_value=mlp.predict(predict_data.normalize_data(),predict_data.label_iris_dat())
-
+returned_value=mlp.predict(predict_data.normalize_data(),predict_data.label_iris_dat(),activation_function=ActivaionFunction.HYPERBOLIC_TANGENT)
 labels=predict_data.label_iris_dat()
 counter=0
 
