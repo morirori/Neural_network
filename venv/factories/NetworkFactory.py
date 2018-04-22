@@ -1,6 +1,8 @@
 from factories.LayerFactory import  LayerFactory
 from model.Network import Network
-
+from utils.LayersTags import LayersTags
+from factories.BiasFactory import BiasFactory
+from factories.SynapseFactory import SynapseFactory
 class NetworkFactory():
 
     @staticmethod
@@ -12,18 +14,19 @@ class NetworkFactory():
             i=i+1
 
         for i in range(len(neuron_list)):
+
             if i == 0:
-                layers[i].tag="input"
-                layers[i].connect_forward(layers[i+1])
+                layers[i].tag=LayersTags.INPUT_LAYER
+                layers[i].connect_to_next_layer(layers[i+1])
 
             elif i == len(neuron_list)-1:
-                layers[i].tag="output"
-                layers[i].connect_backward(layers[i-1])
+                layers[i].tag=LayersTags.OUTPUT_LAYER
+                #already connected
 
             else:
-                layers[i].tag = "hidden"
-                layers[i].connect_forward(layers[i+1])
-                layers[i].connect_backward(layers[i-1])
+                layers[i].tag = LayersTags.HIDDEN_LAYER
+                layers[i].add_bias(BiasFactory.create(i))
+                layers[i].connect_to_next_layer(layers[i+1])
 
         return Network(layers)
 
@@ -37,21 +40,19 @@ class NetworkFactory():
 
         for i in range(len(neuron_list)):
             for j in range(len(neuron_list)):
-                if i == 0 and j !=0 :
-                    layers[i].tag="input"
-                    layers[i].connect_forward(layers[j])
+                if i == 0:
+                    layers[i].tag=LayersTags.INPUT_LAYER
+                    if j > i:
+                        layers[i].connect_to_next_layer(layers[j])
 
-                elif i == (len(neuron_list)-1) and j != (len(neuron_list)-1) :
-                    layers[i].tag="output"
-                    layers[i].connect_backward(layers[j])
+                elif i == (len(neuron_list)-1):
+                    layers[i].tag=LayersTags.OUTPUT_LAYER
 
-                elif i != (len(neuron_list)-1) and i < j:
-                    layers[i].tag = "hidden"
-                    layers[i].connect_forward(layers[j])
-
-                elif i != 0  and i > j:
-                    layers[i].tag = "hidden"
-                    layers[i].connect_backward(layers[j])
+                elif 0 < i < (len(neuron_list) - 1):
+                    layers[i].tag = LayersTags.HIDDEN_LAYER
+                    if j > i:
+                        layers[i].add_bias(BiasFactory.create(i))
+                        layers[i].connect_to_next_layer(layers[j])
 
         return Network(layers)
 

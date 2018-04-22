@@ -1,38 +1,23 @@
-from model.Neuron import  Neuron
+from model.Neuron import Neuron
+
 
 class Synapse():
 
     def __init__(self):
-        self.synapses=[]
+        self.synapse = {}
 
-
-    def add_connection(self,neuron,weight):
-            temp_dict={}
-            temp_dict["neuron"]=neuron
-            temp_dict["weight"]=weight
-            self.synapses.append(temp_dict)
-
-    def update_neuron(self,index,neuron):
-            self.synapses[index]["neuron"]=neuron
-
-
-    def get_synapses_list(self):
-        return self.synapses
-
-    def get_raw_data(self):
-        to_return=[]
-        for synapse in self.synapses:
-            if isinstance(synapse["neuron"],Neuron):
-                to_return.append(synapse["neuron"].get_output())
-            else:
-                to_return.append(synapse["neuron"])
-
-        return to_return
+    def add_connection(self, input_neuron, weight, output_neuron):
+        self.synapse["input_neuron"] = input_neuron
+        self.synapse["weight"] = weight
+        self.synapse["output_neuron"] = output_neuron
 
     def print(self):
-        toReturn=""
-        for x in self.synapses:
-            toReturn+= "neuron id: {0} layer id:  {1} output{2} weight {3} ".format(str(x["neuron"].id), str(x["neuron"].layer_id),
-                                                                                    str(x["neuron"].output), str(x["weight"]))
-
-        return toReturn
+        print("input_neuron id: {0} layer id:  {1} output{2} weight {3}  /n" \
+              " output_neuron id: {4} layer id:  {5} output{6}" \
+              "".format(str(self.synapse["input_neuron"].id),
+                        str(self.synapse["input_neuron"].layer_id),
+                        str(self.synapse["input_neuron"].output),
+                        str(self.synapse["weight"]),
+                        str(self.synapse["output_neuron"].id),
+                        str(self.synapse["output_neuron"].layer_id),
+                        str(self.synapse["output_neuron"].output)))

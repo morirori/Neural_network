@@ -1,4 +1,5 @@
 from factories.NeuronFactory import NeuronFactory
+from factories.BiasFactory import BiasFactory
 from model.Layer import Layer
 
 class LayerFactory:
@@ -9,4 +10,5 @@ class LayerFactory:
         for i in range(number_of_neuron):
             neuron_list.append(NeuronFactory.create(layer_num,i))
 
-        return Layer(neuron_list)
+        layer = Layer(neuron_list)
+        return layer

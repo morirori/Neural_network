@@ -32,16 +32,6 @@ class DataHelper():
             normalized_data.append(temp)
         return normalized_data
 
-    # @staticmethod
-    # def convert_data_to_label(data):
-    #     to_return=[]
-    #     for i in range(len((data))):
-    #         if data[i]==[1,0,0]:
-    #             to_return.append()
-    #         elif data[i] == [0, 1, 0]:
-    #             to_return.append()
-    #         elif data[i] == [0, 0, 1]:
-
     def extract_data(data):
         to_return=list()
         for i in range(len(data)):

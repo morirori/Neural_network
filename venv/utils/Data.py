@@ -11,6 +11,9 @@ class Data():
         self.labels=DataHelper.label_iris_data(self.data)
         return self.labels
 
+    def get_raw_data(self):
+        return DataHelper.extract_data(self.data)
+
     def normalize_data(self):
         return DataHelper.mornalize_input_data(self.data)
 
