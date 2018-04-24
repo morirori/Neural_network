@@ -1,5 +1,3 @@
-from utils.DataImporter import  Data_importer
-
 class DataHelper():
 
     def __init__(self):

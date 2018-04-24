@@ -3,7 +3,7 @@ from random import shuffle
 class Data_importer():
 
     @staticmethod
-    def import_data_to_list_of_dict(file,ret_rows_num,shufle_data=True ):
+    def import_data_to_list_of_dict(file,ret_rows_num,shufle_data ):
         data=[]
         file=pandas.read_excel(file)
         data=file.to_dict("records")

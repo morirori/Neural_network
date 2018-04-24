@@ -11,26 +11,27 @@ class Network:
         self.activation_function=""
         self.input_layer=layer[0]
         self.output_layer=layer[-1]
-        self.beta = 0.2
-        self.learning_rate = 0.05
+        self.beta = 0.8
+        self.learning_rate = 0.2
         self.label=list()
+
     # TODO: offline trainifn
     # TODO: updating learinig rate
 
     def train(self, data, labels, repetitions, activation_function):
         self.set_activation_fun(activation_function)
-        for i in range(len(data)):
-            self.set_feature_value(data[i])
-            self.set_label(labels[i])
-            for j in range(repetitions):
+        for j in range(repetitions):
+            for i in range(len(data)):
+                self.set_feature_value(data[i])
+                self.set_label(labels[i])
                 self.calculate(beta=self.beta,activation_function=self.activation_function)
                #  print("label")
                #  print(self.label)
                #
                #  print("output")
                #  print(self.get_output())
-
                 self.backpropagation(learning_factor=self.learning_rate,activation_function=self.activation_function)
+            self.update_learning_rate()
 
     def predict(self, data, labels, activation_function):
         self.set_activation_fun(activation_function)
@@ -100,3 +101,6 @@ class Network:
         for layer in self.layers_list:
             layer.print()
         print("output")
+
+    def update_learning_rate(self):
+        self.beta=0.99*self.beta
