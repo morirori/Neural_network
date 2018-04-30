@@ -1,7 +1,9 @@
-from model.Neuron import Neuron
+from model.MLPNeuron import MLPNeuron
 
-class NeuronFactory:
+
+class NeuronFactory():
+
     @staticmethod
     def create(layer_id,id):
-        neuron=Neuron(layer_id,id)
+        neuron=MLPNeuron(layer_id, id)
         return neuron

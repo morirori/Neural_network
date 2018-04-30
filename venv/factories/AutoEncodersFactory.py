@@ -1,6 +1,8 @@
 from factories.LayerFactory import  LayerFactory
 from model.AutoEncoder import AutoEncoder
 from utils.LayersTags import LayersTags
+
+
 class AutoEncoderFactory():
 
     @staticmethod

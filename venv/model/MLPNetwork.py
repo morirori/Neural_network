@@ -4,16 +4,19 @@ from model.Layer import Layer
 from utils.LayersTags import LayersTags
 from utils.Functions import ActivaionFunction
 from utils.Functions import ActivationFunctionDoesntExist
-class Network:
+from abstracts.AbstractNetwork import AbstractNetwork
 
-    def __init__(self,layer):
-        self.layers_list=layer
-        self.activation_function=""
-        self.input_layer=layer[0]
-        self.output_layer=layer[-1]
-        self.beta = 0.8
+
+class MLPNetwork(AbstractNetwork):
+
+    def __init__(self, layer):
+        self.__layers_list = layer
+        self.activation_function = None
+        self.__input_layer = layer[0]
+        self.__output_layer = layer[-1]
+        self.beta = 0.6
         self.learning_rate = 0.2
-        self.label=list()
+        self.label = list()
 
     # TODO: offline trainifn
     # TODO: updating learinig rate
@@ -24,22 +27,22 @@ class Network:
             for i in range(len(data)):
                 self.set_feature_value(data[i])
                 self.set_label(labels[i])
-                self.calculate(beta=self.beta,activation_function=self.activation_function)
-               #  print("label")
-               #  print(self.label)
-               #
-               #  print("output")
-               #  print(self.get_output())
-                self.backpropagation(learning_factor=self.learning_rate,activation_function=self.activation_function)
+                self.calculate(beta=self.beta, activation_function=self.activation_function)
+                #  print("label")
+                #  print(self.label)
+                #
+                #  print("output")
+                #  print(self.get_output())
+                self.backpropagation(learning_factor=self.learning_rate, activation_function=self.activation_function)
             self.update_learning_rate()
 
     def predict(self, data, labels, activation_function):
         self.set_activation_fun(activation_function)
-        to_return=list()
+        to_return = list()
         for i in range(len(data)):
             self.set_feature_value(data[i])
             self.set_label(labels[i])
-            self.calculate(beta=self.beta,activation_function=self.activation_function)
+            self.calculate(beta=self.beta, activation_function=self.activation_function)
             to_return.append(self.get_output())
         return to_return
 
@@ -57,17 +60,17 @@ class Network:
     def set_label(self, label):
         self.label = label
 
-    def set_feature_value(self,data):
-        counter=0
-        input_neuron=self.layers_list[0].neuron_vector
-        for neuron in input_neuron :
-            neuron.output=data[counter]
+    def set_feature_value(self, data):
+        counter = 0
+        input_neuron = self.layers_list[0].neuron_vector
+        for neuron in input_neuron:
+            neuron.output = data[counter]
             counter += 1
 
-    def calculate(self,beta,activation_function):
-        for layer  in self.layers_list:
+    def calculate(self, beta, activation_function):
+        for layer in self.layers_list:
             if layer.tag != LayersTags.INPUT_LAYER:
-                layer.update(activation_function,beta)
+                layer.update(activation_function, beta)
 
     def backpropagation(self, learning_factor, activation_function):
         for layer in reversed(self.layers_list):
@@ -84,7 +87,7 @@ class Network:
             delta = self.label[i] - self.output_layer.neuron_vector[i].output
             self.output_layer.neuron_vector[i].delta = delta
 
-    def set_activation_fun(self,activation_fun):
+    def set_activation_fun(self, activation_fun):
         if ActivaionFunction(activation_fun) is not None:
             self.activation_function = activation_fun
         else:
@@ -92,7 +95,7 @@ class Network:
 
     def update_id(self):
         for i in range(len(self.layers_list)):
-            self.layers_list[i].id=i
+            self.layers_list[i].id = i
             self.layers_list[i].update_neuron_ids()
 
     def print(self):
@@ -103,4 +106,28 @@ class Network:
         print("output")
 
     def update_learning_rate(self):
-        self.beta=0.99*self.beta
+        self.beta = 0.99 * self.beta
+
+    @property
+    def layers_list(self):
+        return self.__layers_list
+
+    @property
+    def input_layer(self):
+        return self.__input_layer
+
+    @property
+    def output_layer(self):
+        return self.__output_layer
+    #
+    # @layers_list.setter
+    # def layers_list(self, layer_list):
+    #     self.__layers_list = layer_list
+    #
+    # @output_layer.setter
+    # def output_layer(self, output_layer):
+    #     self.__output_layer = output_layer
+    #
+    # @input_layer.setter
+    # def input_layer(self, input_layer):
+    #     pass

@@ -1,6 +1,6 @@
-from model.Network import Network
+from model.MLPNetwork import MLPNetwork
 from utils.LayersTags import LayersTags
-class AutoEncoder(Network):
+class AutoEncoder(MLPNetwork):
 
     def calculate(self,beta,activation_function):
         for layer in self.layers_list:

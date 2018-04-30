@@ -4,18 +4,31 @@ from utils.Functions import sigmoid_derivative
 from utils.Functions import hiberbolic
 from utils.Functions import hiperbolic_derivative
 from utils.Functions import ActivaionFunction
+from abstracts.AbstractNeuron import AbstractNeuron
 
-class Neuron():
-    
+
+class MLPNeuron(AbstractNeuron):
+
+    @property
+    def output(self):
+        return self.__output
+
+    @property
+    def id(self):
+        return self.__id
+
+    @property
+    def layer_id(self):
+        return self.__layer_id
+
     def __init__(self,layer_id, id):
-        self.layer_id=layer_id
-        self.id=id
+        self.__layer_id=layer_id
+        self.__id=id
         self.input_synapses=[]  #synapse
         self.output_synapses=[]
-        self.weighted_sum=0
-        self.delta=0
-        self.data=[]
-        self.output=0
+        self.weighted_sum = 0
+        self.delta = 0
+        self.__output = 0
 
     def add_input_synapse(self,synapses_list):
             self.input_synapses.append(synapses_list)
@@ -31,11 +44,7 @@ class Neuron():
         self.weighted_sum=temp_weight
 
     def calculate_output(self,  activation_fun,beta):
-        self.calculate_weighted_sum()
-        if activation_fun == ActivaionFunction.SIGMOID:
-            self.output=sigmoid(beta,self.weighted_sum)
-        if activation_fun == ActivaionFunction.HYPERBOLIC_TANGENT:
-            self.output=hiberbolic(beta,self.weighted_sum)
+        pass
 
     def update_weights(self,learning_factor,activation_fun ):
         for synapse in self.input_synapses:
@@ -63,7 +72,11 @@ class Neuron():
         self.delta=delta
 
     def update(self,activation_fun,beta):
-        self.calculate_output(activation_fun,beta)
+        self.calculate_weighted_sum()
+        if activation_fun == ActivaionFunction.SIGMOID:
+            self.output=sigmoid(beta,self.weighted_sum)
+        if activation_fun == ActivaionFunction.HYPERBOLIC_TANGENT:
+            self.output=hiberbolic(beta,self.weighted_sum)
 
     def get_output(self):
         return self.output
@@ -80,3 +93,15 @@ class Neuron():
         for synapse in self.output_synapses:
                 synapse.print()
         return " /n"
+
+    @layer_id.setter
+    def layer_id(self, layer_id):
+        self.__layer_id = layer_id
+
+    @id.setter
+    def id(self, id):
+        self.__id = id
+
+    @output.setter
+    def output(self, output):
+        self.__output = output

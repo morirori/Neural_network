@@ -1,4 +1,4 @@
-from model.Neuron import Neuron
+from model.MLPNeuron import MLPNeuron
 
 
 class Synapse():

@@ -1,4 +1,4 @@
-from model import Network
+from model import MLPNetwork
 from utils.LayersTags import LayersTags
 from factories.NeuronFactory import NeuronFactory
 class NetworkHelper():

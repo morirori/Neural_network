@@ -1,6 +1,7 @@
 from utils.Data import  Data
 from factories.NetworkFactory import NetworkFactory
-from model.Network import Network
+from utils.NetworkTags import NetworkTags
+
 from utils.Functions import ActivaionFunction
 import time
 
@@ -12,11 +13,11 @@ normalized_data=data.normalize_data()
 print(normalized_data[0])
 
 layers=[data.def_input_neurons(),10,7,data.def_output_neurons()]
-mlp = NetworkFactory.create_with_contigious_connection(layers)
+mlp = NetworkFactory.create(NetworkTags.MLPWithContiguousConnection,layers)
 
-mlp.train(data.normalize_data(),data.label_iris_dat(),repetitions=500,activation_function=ActivaionFunction.HYPERBOLIC_TANGENT)
+mlp.train(data.normalize_data(),data.label_iris_dat(),repetitions=500,activation_function=ActivaionFunction.SIGMOID)
 predict_data=Data("resources/IrisData.xls",150,shufle_data=False)
-returned_value=mlp.predict(predict_data.normalize_data(),predict_data.label_iris_dat(),activation_function=ActivaionFunction.HYPERBOLIC_TANGENT)
+returned_value=mlp.predict(predict_data.normalize_data(),predict_data.label_iris_dat(),activation_function=ActivaionFunction.SIGMOID)
 labels=predict_data.label_iris_dat()
 counter=0
 
