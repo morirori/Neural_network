@@ -1,12 +1,14 @@
 from factories.SynapseFactory import SynapseFactory
-from utils.LayersTags import LayersTags
+from utils.Tags import LayersTags
+from utils.Strategies.UpdatingStrategyContext import UpdatingStrategyContext
+from utils.Strategies.UpdatingWeightsStrategyContext import UpdatingWeightsStrategyContext
 class Layer():
 
-    def __init__(self,neuron_vector ):
-         self.neuron_vector=neuron_vector
-         self.tag=""
-         self.id=0
-         self.bias=""
+    def __init__(self,neuron_vector,id ):
+        self.neuron_vector=neuron_vector
+        self.tag=""
+        self.id=id
+        self.bias=""
 
     def add_neuron(self,vector):
         self.neuron_vector.append(vector)
@@ -32,7 +34,6 @@ class Layer():
                 if self.tag == LayersTags.HIDDEN_LAYER:
                     neuron_output.add_input_synapse(SynapseFactory.create_bias(self.bias,neuron_output))
 
-
     def connect_backward(self, synapse):
         for neuron in self.neuron_vector:
             neuron.add_input_synapse(synapse)
@@ -57,17 +58,12 @@ class Layer():
             self.neuron_vector[i].layer_id=self.id
 
     def update(self,activation_fun,beta):
-        for neuron in self.neuron_vector:
-            neuron.update(activation_fun,beta)
+        context= UpdatingStrategyContext(self.tag)
+        context.strategy.update(self,activation_fun,beta)
 
     def update_weights(self,activation_fun,learning_factor):
-        if self.tag != LayersTags.OUTPUT_LAYER:
-            for neuron in self.neuron_vector:
-                neuron.calculate_delta(activation_fun=activation_fun)
-                neuron.update_weights(learning_factor=learning_factor,activation_fun=activation_fun)
-        else:
-            for neuron in self.neuron_vector:
-                neuron.update_weights(learning_factor=learning_factor,activation_fun=activation_fun)
+        context= UpdatingWeightsStrategyContext(self.tag)
+        context.strategy.update(self,activation_fun,learning_factor)
 
     def get_layer_output(self):
         output=list()

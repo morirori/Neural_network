@@ -2,9 +2,11 @@ import numpy as np
 from math import exp
 from enum import Enum
 
+
 class ActivationFunctionDoesntExist(Exception):
     def __init__(self):
         message="Provieded activation function doesnt exist"
+
 
 class ActivaionFunction(Enum):
     HYPERBOLIC_TANGENT="hyperbolic tangent"

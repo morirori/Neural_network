@@ -1,6 +1,8 @@
 from model import MLPNetwork
-from utils.LayersTags import LayersTags
-from factories.NeuronFactory import NeuronFactory
+from utils.Tags import LayersTags
+from factories.NodeFactory import NodeFactory
+from utils.Tags import NodesTags
+
 class NetworkHelper():
 
     @staticmethod
@@ -32,7 +34,7 @@ class NetworkHelper():
 
         for i in range(number_of_neurons):
             #print ("index" + sindex)
-            network.layers_list[index].neuron_vector.append(NeuronFactory.create(index,i+50))
+            network.layers_list[index].neuron_vector.append(NodeFactory.create(NodesTags.MLPNeuron,index,i+50))
             network.layers_list[index].connect_backward_concrete_neuron(-1, network.layers_list[0]) #connecting previously added neuron with input layer
             network.layers_list[index].connect_forward_concrete_neuron(-1, network.layers_list[index+1]) #connecting previously added neuron with next layer
 

@@ -1,8 +1,9 @@
 from factories.LayerFactory import  LayerFactory
 from model.MLPNetwork import MLPNetwork
-from utils.LayersTags import LayersTags
-from factories.BiasFactory import BiasFactory
-from factories.SynapseFactory import SynapseFactory
+from utils.Tags import LayersTags,NodesTags
+from factories.NodeFactory import NodeFactory
+
+
 class MLPNetworkFactory():
 
     @staticmethod
@@ -10,7 +11,7 @@ class MLPNetworkFactory():
         layers= list()
         i=0
         for neurons_num in neuron_list:
-            layers.append(LayerFactory.create(i,neurons_num))
+            layers.append(LayerFactory.create(NodesTags.MLPNeuron,i,neurons_num))
             i=i+1
 
         for i in range(len(neuron_list)):
@@ -25,7 +26,7 @@ class MLPNetworkFactory():
 
             else:
                 layers[i].tag = LayersTags.HIDDEN_LAYER
-                layers[i].add_bias(BiasFactory.create(i))
+                layers[i].add_bias(NodeFactory.create(NodesTags.Bias,i,"Bias"))
                 layers[i].connect_to_next_layer(layers[i+1])
 
         return MLPNetwork(layers)
@@ -35,7 +36,7 @@ class MLPNetworkFactory():
         layers= list()
         i=0
         for neurons_num in neuron_list:
-            layers.append(LayerFactory.create(i,neurons_num))
+            layers.append(LayerFactory.create(NodesTags.MLPNeuron,i,neurons_num))
             i=i+1
 
         for i in range(len(neuron_list)):
@@ -51,7 +52,7 @@ class MLPNetworkFactory():
                 elif 0 < i < (len(neuron_list) - 1):
                     layers[i].tag = LayersTags.HIDDEN_LAYER
                     if j > i:
-                        layers[i].add_bias(BiasFactory.create(i))
+                        layers[i].add_bias(NodeFactory.create(NodesTags.Bias, i, "Bias"))
                         layers[i].connect_to_next_layer(layers[j])
 
         return MLPNetwork(layers)

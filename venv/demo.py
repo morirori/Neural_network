@@ -1,6 +1,6 @@
 from utils.Data import  Data
 from factories.NetworkFactory import NetworkFactory
-from utils.NetworkTags import NetworkTags
+from utils.Tags import NetworkTags
 
 from utils.Functions import ActivaionFunction
 import time

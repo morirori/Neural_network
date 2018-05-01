@@ -1,7 +1,7 @@
-from utils.NetworkTags import NetworkTags
+from utils.Tags import NetworkTags
 from factories.MLPNetworkFactory import MLPNetworkFactory
 from factories.AutoEncodersFactory import AutoEncoderFactory
-
+from factories.SOMFactory import SOMFactory
 
 class NetworkFactory():
 
@@ -17,6 +17,6 @@ class NetworkFactory():
             return MLPNetworkFactory.create_with_each_layer_connection(layers)
 
         elif network_type == NetworkTags.SOM:
-            pass
+            return SOMFactory.create(layers)
 
 

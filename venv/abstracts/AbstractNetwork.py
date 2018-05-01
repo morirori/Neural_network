@@ -26,6 +26,9 @@ class AbstractNetwork(metaclass=ABCMeta):
     def predict(self):
         pass
 
-    @abstractmethod
-    def set_feature_value(self):
-        pass
+    def set_feature_value(self,data):
+        counter = 0
+        input_neuron = self.layers_list[0].neuron_vector
+        for neuron in input_neuron:
+            neuron.output = data[counter]
+            counter += 1

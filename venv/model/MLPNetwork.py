@@ -1,7 +1,6 @@
 from builtins import len
 
-from model.Layer import Layer
-from utils.LayersTags import LayersTags
+from utils.Tags import LayersTags
 from utils.Functions import ActivaionFunction
 from utils.Functions import ActivationFunctionDoesntExist
 from abstracts.AbstractNetwork import AbstractNetwork
@@ -14,7 +13,7 @@ class MLPNetwork(AbstractNetwork):
         self.activation_function = None
         self.__input_layer = layer[0]
         self.__output_layer = layer[-1]
-        self.beta = 0.6
+        self.beta = 0.8
         self.learning_rate = 0.2
         self.label = list()
 
@@ -59,13 +58,6 @@ class MLPNetwork(AbstractNetwork):
 
     def set_label(self, label):
         self.label = label
-
-    def set_feature_value(self, data):
-        counter = 0
-        input_neuron = self.layers_list[0].neuron_vector
-        for neuron in input_neuron:
-            neuron.output = data[counter]
-            counter += 1
 
     def calculate(self, beta, activation_function):
         for layer in self.layers_list:
@@ -119,6 +111,7 @@ class MLPNetwork(AbstractNetwork):
     @property
     def output_layer(self):
         return self.__output_layer
+
     #
     # @layers_list.setter
     # def layers_list(self, layer_list):
