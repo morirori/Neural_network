@@ -4,7 +4,7 @@ class WinnerHolder():
 
     @staticmethod
     def set_winner(neuron):
-        WinnerHolder.winner=neuron
+        WinnerHolder.winner = neuron
 
     @staticmethod
     def get_winner():

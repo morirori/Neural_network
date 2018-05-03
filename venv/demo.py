@@ -12,7 +12,7 @@ data.label_iris_dat()
 normalized_data=data.normalize_data()
 print(normalized_data[0])
 
-layers=[data.def_input_neurons(),10,7,data.def_output_neurons()]
+layers=[data.def_input_neurons(),15,10,data.def_output_neurons()]
 mlp = NetworkFactory.create(NetworkTags.MLPWithContiguousConnection,layers)
 
 mlp.train(data.normalize_data(),data.label_iris_dat(),repetitions=500,activation_function=ActivaionFunction.SIGMOID)

@@ -2,9 +2,11 @@ from factories.SynapseFactory import SynapseFactory
 from utils.Tags import LayersTags
 from utils.Strategies.UpdatingStrategyContext import UpdatingStrategyContext
 from utils.Strategies.UpdatingWeightsStrategyContext import UpdatingWeightsStrategyContext
-class Layer():
 
-    def __init__(self,neuron_vector,id ):
+
+class Layer:
+
+    def __init__(self,neuron_vector,id):
         self.neuron_vector=neuron_vector
         self.tag=""
         self.id=id
@@ -59,14 +61,14 @@ class Layer():
 
     def update(self,activation_fun,beta):
         context= UpdatingStrategyContext(self.tag)
-        context.strategy.update(self,activation_fun,beta)
+        context.strategy.update(self, activation_fun, beta)
 
     def update_weights(self,activation_fun,learning_factor):
-        context= UpdatingWeightsStrategyContext(self.tag)
-        context.strategy.update(self,activation_fun,learning_factor)
+        context = UpdatingWeightsStrategyContext(self.tag)
+        context.strategy.update(self, activation_fun, learning_factor)
 
     def get_layer_output(self):
-        output=list()
+        output = list()
         for neuron in self.neuron_vector:
             output.append(neuron.output)
 

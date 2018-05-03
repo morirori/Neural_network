@@ -17,16 +17,18 @@ class MLPNUpdatingWeightsStrategy(AbstractUpdatingWeightsStrategy):
 
 class SOMUpdatingWeightsStrategy(AbstractUpdatingWeightsStrategy):
 
-    def update(self, layer, activation_fun, beta):
-        #TODO updating weights strategy
-        pass
+    def update(self, layer, sigma, gama):
+        for neuron in layer.neuron_vector:
+            if neuron.is_valid(sigma):
+                neuron.calculate_delta(sigma=sigma)
+                neuron.update_weights(gama=gama, learning_factor=None)
 
 
 class UpdatingWeightsStrategyContext:
 
     def __init__(self, layer_tag):
         if layer_tag == LayersTags.SOM:
-            pass
+            self.strategy = SOMUpdatingWeightsStrategy()
         else:
             self.strategy = MLPNUpdatingWeightsStrategy()
 
