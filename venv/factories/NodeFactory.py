@@ -1,7 +1,8 @@
-from model.MLPNeuron import MLPNeuron
-from model.SOMNeuron import SOMNeuron
+from model.Neurons.MLPNeuron import MLPNeuron
+from model.Neurons.SOMNeuron import SOMNeuron
+from model.Neurons.ConvNeuron import ConvNeuron
 from utils.Tags import NodesTags
-from model.Bias import Bias
+from model.Neurons.Bias import Bias
 
 
 class NodeFactory:
@@ -9,8 +10,9 @@ class NodeFactory:
     @staticmethod
     def create(node_tag, layer_id, id):
         if node_tag == NodesTags.MLPNeuron:
-            neuron=MLPNeuron(layer_id, id)
-
+            neuron = MLPNeuron(layer_id, id)
+        elif node_tag == NodesTags.ConvNeuron:
+            neuron = ConvNeuron(layer_id, id)
         elif node_tag == NodesTags.SOMNeuron:
             neuron=SOMNeuron(layer_id, id)
 

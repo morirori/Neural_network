@@ -1,5 +1,5 @@
-from factories.LayerFactory import  LayerFactory
-from model.AutoEncoder import AutoEncoder
+from factories.D1LayerFactory import  D1LayerFactory
+from model.Networks.AutoEncoder import AutoEncoder
 from utils.Tags import LayersTags,NodesTags
 
 
@@ -10,7 +10,7 @@ class AutoEncoderFactory():
         layers= list()
         i=0
         for neurons_num in neuron_list:
-            layers.append(LayerFactory.create(NodesTags.MLPNeuron,i,neurons_num))
+            layers.append(D1LayerFactory.create(NodesTags.MLPNeuron, i, neurons_num))
             i=i+1
 
         for i in range(len(neuron_list)):

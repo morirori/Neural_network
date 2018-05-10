@@ -1,5 +1,6 @@
-from utils.DataImporter import  Data_importer
-from utils.DataHelper import  DataHelper
+from utils.DataImporter import Data_importer
+from utils.DataHelper import DataHelper
+
 
 class Data():
 

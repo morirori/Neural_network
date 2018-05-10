@@ -2,6 +2,8 @@ from utils.Tags import NetworkTags
 from factories.MLPNetworkFactory import MLPNetworkFactory
 from factories.AutoEncodersFactory import AutoEncoderFactory
 from factories.SOMFactory import SOMFactory
+from factories.ConvNetFactory import ConvNetFactory
+
 
 class NetworkFactory():
 
@@ -12,6 +14,9 @@ class NetworkFactory():
 
         elif network_type == NetworkTags.AutoEncoder:
             return AutoEncoderFactory.create(layers)
+
+        elif network_type == NetworkTags.ConvNet:
+            return ConvNetFactory.create(layers)
 
         elif network_type == NetworkTags.MLPWithEachLayerConnection:
             return MLPNetworkFactory.create_with_each_layer_connection(layers)

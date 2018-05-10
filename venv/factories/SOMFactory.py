@@ -1,6 +1,6 @@
-from factories.LayerFactory import  LayerFactory
+from factories.D1LayerFactory import  D1LayerFactory
 from utils.Tags import LayersTags,NodesTags
-from model.SOMNetwork import SOMNetwork
+from model.Networks.SOMNetwork import SOMNetwork
 
 
 class SOMFactory():
@@ -10,7 +10,7 @@ class SOMFactory():
         layers= list()
         i=0
         for neurons_num in neuron_list:
-            layers.append(LayerFactory.create(NodesTags.SOMNeuron,i,neurons_num))
+            layers.append(D1LayerFactory.create(NodesTags.SOMNeuron, i, neurons_num))
             i=i+1
 
         for i in range(len(neuron_list)):

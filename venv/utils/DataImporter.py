@@ -1,5 +1,6 @@
 import pandas
 from random import shuffle
+
 class Data_importer():
 
     @staticmethod
