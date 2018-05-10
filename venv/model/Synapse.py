@@ -1,6 +1,3 @@
-from model.MLPNeuron import MLPNeuron
-
-
 class Synapse():
 
     def __init__(self):

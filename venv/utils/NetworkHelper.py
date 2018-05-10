@@ -1,4 +1,3 @@
-from model import MLPNetwork
 from utils.Tags import LayersTags
 from factories.NodeFactory import NodeFactory
 from utils.Tags import NodesTags

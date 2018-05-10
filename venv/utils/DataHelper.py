@@ -1,3 +1,5 @@
+from sklearn.datasets import fetch_mldata
+
 class DataHelper():
 
     def __init__(self):
@@ -17,6 +19,16 @@ class DataHelper():
                 label.append([0, 0, 1])
 
         return label
+
+    @staticmethod
+    def prepare_digit_data():
+        recived_data = fetch_mldata('MNIST original',  data_home='C:/Users/michal/PycharmProjects/untitled1/venv/resources/digit_data')
+        data=list()
+        label=list()
+        for i in range(len(recived_data.data)):
+            data.append(recived_data.data[i].reshape(28 , 28))
+            label.append(recived_data.target[i])
+        return data,label
 
     @staticmethod
     def mornalize_input_data(unnormalized_data):

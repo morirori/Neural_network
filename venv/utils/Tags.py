@@ -6,7 +6,7 @@ class NetworkTags(Enum):
     AutoEncoder="AutoEncoder"
     SOM="SOM"
     MLPWithEachLayerConnection="MLPWithEachLayerConnection"
-
+    ConvNet = "ConvNet"
 
 class LayersTags(Enum):
     INPUT_LAYER="input layer"
@@ -15,9 +15,10 @@ class LayersTags(Enum):
     ENCODER="encoder"
     DECODER="decoder"
     SOM="SOM"
-
+    CONV_LAYER = "CONV_LAYER"
 
 class NodesTags(Enum):
     SOMNeuron = "SOM"
     Bias = "Bias"
     MLPNeuron = "MLPNeuron"
+    ConvNeuron = "ConvNeuron"
