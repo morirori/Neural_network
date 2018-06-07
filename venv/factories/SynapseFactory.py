@@ -8,7 +8,8 @@ class SynapseFactory:
     @staticmethod
     def create(input_neuron,output_neuron):
         synapse = Synapse()
-        weight=random.uniform(0.078, 0.78)
+        # weight=random.uniform(0.078, 0.78)
+        weight=random.uniform(-1, 1)
         synapse.add_connection(input_neuron,weight,output_neuron)
         return synapse
 
